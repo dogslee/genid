@@ -91,11 +91,12 @@ func (g *generator) check(ctx context.Context) error {
 	return nil
 }
 
+// key  redis key biz+formatdate
 func key(biz string) string {
 	return biz + time.Now().Local().Format("20060102150304")
-	// return biz + time.Now().Local().Format("20060102")
 }
 
+// code biz + formatdate + sequence
 func code(key string, sequence int) string {
 	return key + fmt.Sprintf("%07d", sequence)
 }

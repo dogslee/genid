@@ -33,6 +33,10 @@ func New(opts ...Option) (Generator, error) {
 	for _, opt := range opts {
 		opt(&o)
 	}
+	// check redis client health
+	if _, err := o.cli.Ping(context.Background()).Result(); err != nil {
+		return nil, err
+	}
 	return &generator{
 		cli:    o.cli,
 		expSec: o.exp, // 默认两秒过期时间
