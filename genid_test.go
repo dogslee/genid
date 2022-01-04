@@ -10,6 +10,7 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+// test
 func Test_New(t *testing.T) {
 
 	var err error
