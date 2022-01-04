@@ -1,4 +1,7 @@
 # genid
+[![Go Refrence Card](https://pkg.go.dev/badge/github.com/dogslee/geni)](https://pkg.go.dev/github.com/dogslee/genid)
+[![Go Passing Card](https://img.shields.io/badge/go-passing-success)](https://github.com/dogslee/genid/actions)
+[![Go Report Card](https://goreportcard.com/badge/github.com/dogslee/genid)](https://goreportcard.com/report/github.com/dogslee/genid)
 
 一个简单的24位 分布式自增的ID生成器
 
