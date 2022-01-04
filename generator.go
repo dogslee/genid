@@ -85,7 +85,6 @@ func (g *generator) check(ctx context.Context) error {
 	} else {
 		pt = lt - ct
 	}
-	fmt.Println("pt:", pt)
 	if pt > 1 {
 		return errors.New("check redis date faile")
 	}
