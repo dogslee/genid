@@ -7,16 +7,13 @@ on:
     branches:
       - main
 
-env:
-  CODECOV_TOKEN: 975ee23e-879c-4c43-bc75-f7a6096b2d6e
-
 jobs:
   # golint
   golangci:
     strategy:
       matrix:
-        go-version: [1.15.x, 1.16.x, 1.17.x]
-        os: [linux-latest, macos-latest, windows-latest]
+        go-version: [1.17.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     name: lint
     runs-on: ${{ matrix.os }}
     steps:
@@ -26,14 +23,38 @@ jobs:
         with:
           # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
           version: v1.29
+  # container
+  container:
+    runs-on: ubuntu-latest
+
+    # runs all of the steps inside the specified container rather than on the VM host.
+    # Because of this the network configuration changes from host based network to a container network.
+    # container:
+    #   image:  redis:latest
+
+    services:
+      redis:
+        image: redis:latest
+        ports:
+        - 16379:6379
+
+    steps:
+     - uses: actions/checkout@v2
+       env:
+        # use mongodb for the host here because we have specified a container for the job.
+        # If we were running the job on the VM this would be localhost
+        MONGODB_HOST: redis
+        MONGODB_PORT: ${{ job.services.redis.ports[16379] }}
 
   # go-test
   test:
+    needs: [lint, container]
     strategy:
       matrix:
         go-version: [1.17.x]
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    name: test
     steps:
     - name: Install Go
       uses: actions/setup-go@v2
@@ -43,9 +64,12 @@ jobs:
       uses: actions/checkout@v2
     - name: Test
       run: go test ./...
+
   # go-coverage
-  build:
+  codecov:
+    needs: [lint, test, container]
     runs-on: ubuntu-latest
+    name: codecov
     steps:
       - uses: actions/checkout@v2
         with:
