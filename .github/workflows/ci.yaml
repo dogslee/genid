@@ -25,6 +25,7 @@ jobs:
           version: v1.29
   # container
   container:
+    needs: golangci
     runs-on: ubuntu-latest
 
     # runs all of the steps inside the specified container rather than on the VM host.
@@ -48,7 +49,7 @@ jobs:
 
   # go-test
   test:
-    needs: [lint, container]
+    needs: [golangci, container]
     strategy:
       matrix:
         go-version: [1.17.x]
@@ -67,7 +68,7 @@ jobs:
 
   # go-coverage
   codecov:
-    needs: [lint, test, container]
+    needs: [golangci, test, container]
     runs-on: ubuntu-latest
     name: codecov
     steps:
