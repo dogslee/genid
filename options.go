@@ -2,6 +2,7 @@ package genid
 
 import "github.com/go-redis/redis/v8"
 
+// Option operator the genid
 type Option func(o *option)
 
 type option struct {
@@ -24,8 +25,8 @@ func Cli(c *redis.Client) Option {
 	}
 }
 
-// Cli 更改默认redis db
-func Db(d int) Option {
+// DB 更改默认redis db
+func DB(d int) Option {
 	return func(o *option) {
 		o.db = d
 	}

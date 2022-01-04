@@ -20,6 +20,7 @@ type Generator interface {
 	CreateBatch(ctx context.Context, biz string, num int) ([]string, error)
 }
 
+// New create new genid
 func New(opts ...Option) (Generator, error) {
 	o := option{
 		exp: exp,
